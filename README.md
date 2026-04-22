@@ -1,70 +1,24 @@
-# Task Manager with Notion API
+Project Description
+Using the Comtech Track, I have created a website that lets users enter a task name and choose its corresponding priority level in a web form. This task manager website allows the backend to send the data to the Notion API to create a new task entry in a table connected to the Notion database. 
 
-## 1. Project Description
-This project is a simple task manager that lets a user enter a task name and choose a priority level in a web form. When the form is submitted, the Express backend sends the data to the Notion API and creates a new task entry in a connected Notion database.
+API Used
+Like in class, Notion API was used to create a new page wherein each submitted task is saved with a task name, priority and default status of  “To Do”.
 
-Track: CommTech
+Setup Instructions
+To install, we first have to clone the repository of the folder and open the project file. Next is we have to open the task manager to install the needed dependencies to connect everything together. Once we are able to install the npm and node.js we need to create a .env file inside the task manager to add the call ups for the key and id of Notion API. Once everything is called up and that the Notion Integration has access to the target database, it is important to create properties in the table that correspond with the name and types in the code. 
 
-## 2. APIs Used
-- [Notion API](https://developers.notion.com/)
-  Used to create a new page inside a Notion database. In this project, each submitted task is saved with a task name, priority, and default status of `To Do`.
+To run locally, in the terminal we have to type npm run dev then open the link it will provide which will redirect the browser to the website page. Ideally, this should connect all things together and the API integration should be completed. 
 
-## 3. Setup Instructions
-1. Clone the repository.
-2. Open the project folder, then go to `task-manager`.
-3. Install dependencies:
+Data Integration Explanation
+For the Data integration flow, the user first types a task name and selects a priority of the respective task. This then allows the frontend JavaScript to capture the input and sends it as JSON to the backend.
 
-```bash
-npm install
-```
+The server then receives the request and checks both the task and priority if they are present. After this, it builds a Notion API request which then maps the submitted values into the Notion database properties. From this, the task becomes Task Name, priority becomes Priority, and Status is automatically set to To Do. 
 
-4. Create a `.env` file inside `task-manager` and add:
+After all this, the backend calls Notion to insert a new page into the configured database. If successful, the server returns a response and the page shows “Task created successfully!”. Otherwise, if it fails such as a missing field, wrong database property name, invalid API key, or unavailable Notion resource, the server will then return an error message and the UI shows the failure message. 
 
-```env
-NOTION_API_KEY=your_notion_integration_secret
-NOTION_DATABASE_ID=your_notion_database_id
-```
+Known Limitations
+In terms of limitations, the website only creates tasks and does not edit, delete, filter, or mark tasks as completed automatically. Additionally, it depends on the exact Notion database property names and valid select options which are the task name and priority level only. Moreover, if the .env file values are missing or incorrect, the task creation will fail and return a invalid API key message. Lastly, this is only a basic validation so cases such as duplicate tasks or long task names are not handled properly by the website. 
 
-5. Make sure your Notion integration has access to the target database.
-6. In the Notion database, create these properties with matching names and types:
-- `Task Name` as `Title`
-- `Priority` as `Select`
-- `Status` as `Select`
+AI Usage Disclosure
+In this Individual Assignment, the use of AI helped me to understand and debug the codes as needed. I implemented and understood the main application, concept and logic myself. However, things such as the installation of API, integration of the API, frontend form submission, route handling, environment variable setup, and Notion database integration was explained by AI to help me better understand how to connect everything. Additionally, Youtube videos such as https://www.youtube.com/watch?v=MDZC8VDZnV8 helped me visualize the codes and integrate them together with the help of AI tools.
 
-To run locally:
-
-```bash
-cd task-manager
-npm run dev
-```
-
-Then open `http://localhost:5000`.
-
-## 4. Data Integration Explanation
-This project follows a CommTech workflow where user input moves through a small automation pipeline. First, the user types a task name and selects a priority in the browser form. The frontend JavaScript captures that input and sends it as JSON to the backend route `/api/create-task`.
-
-The Express server receives the request, checks that both `task` and `priority` are present, and then builds a Notion API request. That request maps the submitted values into Notion database properties:
-- `task` becomes `Task Name`
-- `priority` becomes `Priority`
-- `Status` is automatically set to `To Do`
-
-After that, the backend calls `notion.pages.create()` to insert a new page into the configured database. If the request succeeds, the server returns a success response and the page shows `Task created successfully!`. If something fails, such as a missing field, wrong database property name, invalid API key, or unavailable Notion resource, the server returns an error message and the UI shows the failure state.
-
-Example flow:
-1. User enters `Finish README` and selects `High`.
-2. The browser sends `{ "task": "Finish README", "priority": "High" }`.
-3. The server sends the mapped data to Notion.
-4. A new Notion database item is created with:
-- Task Name: `Finish README`
-- Priority: `High`
-- Status: `To Do`
-
-## 5. Known Limitations
-- The app only creates tasks; it does not edit, delete, filter, or mark tasks as completed.
-- There is no loading spinner beyond text feedback and no task list displayed on the page.
-- The app depends on exact Notion database property names and valid select options.
-- If the `.env` values are missing or incorrect, task creation will fail.
-- There is only basic validation, so edge cases such as duplicate tasks or very long task names are not handled.
-
-## 6. AI Usage Disclosure
-I implemented and understood the main application logic myself, including the frontend form submission, Express route handling, environment variable setup, and Notion database integration.

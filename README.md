@@ -1,4 +1,5 @@
 **Project Description**
+
 Using the Comtech Track, I have created a website that lets users enter a task name and choose its corresponding priority level in a web form. This task manager website allows the backend to send the data to the Notion API to create a new task entry in a table connected to the Notion database. 
 
 **API Used**

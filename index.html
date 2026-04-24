@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+
+    <style>
+        body {
+        font-family: Arial;
+        max-width: 400px;
+        margin: 50px auto;
+        }
+
+        input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        }
+
+        button {
+        cursor: pointer;
+        }
+  </style>
+</head>
+<body>
+
+    <h2>Task Manager</h2>
+
+    <form method="post" id="taskForm">
+        <label for="task">Task Name</label>
+        <input name="task" id="task" type="text" placeholder="Enter task..." required/>
+
+        <label for="priority"></label>
+        <select name="priority" id="priority" required>
+            <option value="">Select Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <button type="submit">Create Task</button>
+    </form>
+
+    <p id="status"></p>
+
+    <script>
+        const form = document.getElementById("taskForm");
+        const statusText = document.getElementById("status");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const task = document.getElementById("task").value;
+            const priority = document.getElementById("priority").value;
+
+            statusText.innerText = "Submitting...";
+
+            try {
+                const res = await fetch("/api/create-task", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ task, priority })
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    statusText.innerText = "Task created successfully!";
+                    form.reset();
+                } else {
+                    statusText.innerText = result.error || "Failed to create task.";
+                }
+            } catch (error) {
+                statusText.innerText = "Server error. Check the backend logs.";
+            }
+        })
+    </script>
+</body>
+</html>
